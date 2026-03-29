@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Complaint Form - Step 1</title>
+
+<style>
+  body {
+    background-color: #0b1d5f;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+  }
+  h1 { margin-bottom: 20px; text-align: center; }
+  form { width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 15px; }
+  input, textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #1e3a8a;
+    border-radius: 8px;
+    background-color: #1e3a8a;
+    color: #fff;
+  }
+  input::placeholder, textarea::placeholder { color: #cbd5e1; }
+  button {
+    background-color: #1e40af;
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  button:hover { background-color: #3b82f6; }
+</style>
+</head>
+
+<body>
+<h1>Submit Your Complaint (Step 1)</h1>
+
+<form id="complaintForm" action="https://api.web3forms.com/submit" method="POST">
+
+  <!-- Web3Forms Key -->
+  <input type="hidden" name="access_key" value="21bda4c6-ce9c-4353-8f0c-b3d6604969b8">
+
+  <!-- Inputs -->
+  <input type="email" id="email" name="email" placeholder="Your Email" required>
+
+  <input type="text" id="whatsapp" name="whatsapp" placeholder="WhatsApp Number" required pattern="[0-9+]{7,15}">
+
+  <textarea id="complaintText" name="complaint" placeholder="Write your complaint here..." required></textarea>
+
+  <input type="text" id="country" name="country" placeholder="Your Country" required>
+
+  <button type="submit">Next</button>
+
+</form>
+
+<script>
+document.getElementById('complaintForm').addEventListener('submit', function(e) {
+
+  // Save Step 1 locally BEFORE sending
+  const step1Data = {
+    email: document.getElementById('email').value.trim(),
+    whatsapp: document.getElementById('whatsapp').value.trim(),
+    complaint: document.getElementById('complaintText').value.trim(),
+    country: document.getElementById('country').value.trim()
+  };
+
+  localStorage.setItem("formStep1", JSON.stringify(step1Data));
+
+  // Allow form to submit to Web3Forms
+  // Then redirect after short delay
+  setTimeout(() => {
+    window.location.href = "verify.html";
+  }, 1000);
+
+});
+</script>
+
+</body>
+</html>
