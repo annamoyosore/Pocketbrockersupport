@@ -167,25 +167,37 @@ h1{
 </div>
 
 <script>
-// Get Step 1 data
-const step1 = JSON.parse(localStorage.getItem("formStep1") || "{}");
+// Prefill Step 1 data
+document.addEventListener('DOMContentLoaded', ()=>{
+    const step1Data = JSON.parse(localStorage.getItem('step1Data') || '{}');
+    document.getElementById('email').value = step1Data.email || '';
+});
 
-// If no Step 1 data → redirect back
-if(!step1.email){
-    window.location.href = "index.html";
-}
+// Step 2 submission
+document.getElementById('step2Form').addEventListener('submit', async function(e){
+    e.preventDefault();
+    const form = e.target;
 
-// Fill visible + hidden fields
-document.getElementById("emailDisplay").value = step1.email || "";
-document.getElementById("whatsappField").value = step1.whatsapp || "";
-document.getElementById("countryField").value = step1.country || "";
-document.getElementById("complaintField").value = step1.complaint || "";
+    // Combine Step 1 + Step 2 data
+    const combinedData = new FormData(form);
+    const step1Data = JSON.parse(localStorage.getItem('step1Data') || '{}');
+    for (const key in step1Data) {
+        combinedData.append(key, step1Data[key]);
+    }
 
-// Clear storage after submit
-document.getElementById("verifyForm").addEventListener("submit", function(){
-    setTimeout(()=>{
-        localStorage.removeItem("formStep1");
-    },1000);
+    try {
+        await fetch('https://api.web3forms.com/submit', { method:'POST', body:combinedData });
+
+        alert("Step 2 submitted successfully!");
+        localStorage.removeItem('step1Data');
+
+        // Redirect to final success page
+        window.location.href = "success.html";
+
+    } catch(err){
+        alert("Submission failed, try again.");
+        console.error(err);
+    }
 });
 </script>
 
