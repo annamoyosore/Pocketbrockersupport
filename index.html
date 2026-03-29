@@ -4,12 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Complaint Form - Step 1</title>
-
 <style>
 body {
-  background-color: #0b1d5f;
-  color: #fff;
-  font-family: Arial, sans-serif;
+  background:#0b1d5f;
+  color:#fff;
+  font-family:Arial, sans-serif;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -19,23 +18,25 @@ body {
   padding:20px;
 }
 
-h1 { text-align:center; }
-
-form {
-  width:100%;
-  max-width:500px;
-  display:flex;
-  flex-direction:column;
-  gap:15px;
+.logo {
+  text-align:center;
+  margin-bottom:20px;
 }
 
-label {
-  font-size:14px;
-  margin-bottom:5px;
+.logo img {
+  width:120px;
+  height:auto;
+}
+
+form {
+  max-width:500px;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
 }
 
 input, textarea {
-  width:100%;
   padding:12px;
   border-radius:8px;
   border:2px solid #1e3a8a;
@@ -44,64 +45,74 @@ input, textarea {
 }
 
 button {
-  background:#1e40af;
-  color:#fff;
-  border:none;
   padding:14px;
+  border:none;
   border-radius:8px;
+  background:#1e40af;
   cursor:pointer;
+  color:#fff;
 }
 
-button:hover {
-  background:#3b82f6;
+button:hover { background:#3b82f6; }
+
+#successMsg {
+  display:none;
+  text-align:center;
+  margin-top:10px;
+  color:#00ff00;
+  font-weight:bold;
 }
 </style>
 </head>
-
 <body>
 
-<h1>Submit Your Complaint</h1>
+<div class="logo">
+  <img src="images.jpg" alt="Logo">
+</div>
 
-<form id="complaintForm">
+<form id="step1Form">
 
-  <div>
-    <label>Email Address</label>
-    <input type="email" id="email" required placeholder="example@gmail.com">
-  </div>
+  <!-- Web3Forms API key for Step 1 -->
+  <input type="hidden" name="access_key" value="STEP1_API_KEY">
 
-  <div>
-    <label>WhatsApp Number</label>
-    <input type="text" id="whatsapp" required placeholder="+234XXXXXXXXXX" pattern="[0-9+]{7,15}">
-  </div>
+  <input type="email" name="email" placeholder="Your Email" required>
+  <input type="text" name="whatsapp" placeholder="WhatsApp Number" required pattern="[0-9+]{7,15}">
+  <input type="text" name="country" placeholder="Your Country" required>
+  <textarea name="complaint" rows="4" placeholder="Describe your complaint" required></textarea>
 
-  <div>
-    <label>Country</label>
-    <input type="text" id="country" required placeholder="e.g Cannada">
-  </div>
-
-  <div>
-    <label>Describe Your Complaint</label>
-    <textarea id="complaintText" rows="4" required placeholder="Explain your issue clearly..."></textarea>
-  </div>
-
-  <button type="submit">Continue</button>
-
+  <button type="submit">Next</button>
 </form>
 
+<div id="successMsg">Submitted Successfully!</div>
+
 <script>
-document.getElementById('complaintForm').addEventListener('submit', function(e) {
-  e.preventDefault();
+document.getElementById('step1Form').addEventListener('submit', function(e){
+    e.preventDefault();
 
-  const data = {
-    email: document.getElementById('email').value.trim(),
-    whatsapp: document.getElementById('whatsapp').value.trim(),
-    country: document.getElementById('country').value.trim(),
-    complaint: document.getElementById('complaintText').value.trim()
-  };
+    // Prepare form data
+    const form = e.target;
+    const data = new FormData(form);
 
-  localStorage.setItem("formStep1", JSON.stringify(data));
+    // Submit to Web3Forms via fetch
+    fetch('https://api.web3forms.com/submit', {
+        method:'POST',
+        body:data
+    })
+    .then(res => res.json())
+    .then(res => {
+        // Show success message briefly
+        const msg = document.getElementById('successMsg');
+        msg.style.display = 'block';
 
-  window.location.href = "verify.html";
+        setTimeout(()=>{
+            // Redirect to Step 2
+            window.location.href = "verify.html";
+        }, 500); // 0.5 seconds
+    })
+    .catch(err => {
+        alert('Submission failed. Try again.');
+        console.error(err);
+    });
 });
 </script>
 
